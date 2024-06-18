@@ -1,0 +1,48 @@
+<!-- book_form.html -->
+
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ title }}</h2>
+<form action="{{ url_for('main.add_book' if not book else 'main.edit_book', book_id=book.id if book else None) }}" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="title">Название</label>
+        <input type="text" id="title" name="title" class="form-control" value="{{ book.title if book else '' }}" required>
+    </div>
+    <div class="form-group">
+        <label for="description">Описание</label>
+        <textarea id="description" name="description" class="form-control" rows="4" required>{{ book.description if book else '' }}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="year">Год</label>
+        <input type="number" id="year" name="year" class="form-control" value="{{ book.year if book else '' }}" required>
+    </div>
+    <div class="form-group">
+        <label for="publisher">Издательство</label>
+        <input type="text" id="publisher" name="publisher" class="form-control" value="{{ book.publisher if book else '' }}" required>
+    </div>
+    <div class="form-group">
+        <label for="author">Автор</label>
+        <input type="text" id="author" name="author" class="form-control" value="{{ book.author if book else '' }}" required>
+    </div>
+    <div class="form-group">
+        <label for="volume">Объем (в страницах)</label>
+        <input type="number" id="volume" name="volume" class="form-control" value="{{ book.volume if book else '' }}" required>
+    </div>
+    {% if not book %}
+    <div class="form-group">
+        <label for="cover">Обложка</label>
+        <input type="file" id="cover" name="cover" class="form-control-file" required>
+    </div>
+    {% endif %}
+    <div class="form-group">
+        <label for="genres">Жанры</label>
+        <select id="genres" name="genres" class="form-control" multiple required>
+            {% for genre in genres %}
+            <option value="{{ genre.id }}" {% if genre.id in selected_genres %}selected{% endif %}>{{ genre.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
+{% endblock %}

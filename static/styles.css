@@ -1,0 +1,19 @@
+body {
+    padding-top: 60px;
+}
+
+.navbar-brand {
+    font-size: 24px;
+}
+
+.nav-link {
+    font-size: 18px;
+}
+
+.table {
+    margin-top: 20px;
+}
+
+.pagination {
+    margin-top: 20px;
+}

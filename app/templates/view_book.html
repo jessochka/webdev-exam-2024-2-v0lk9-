@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ book.title }}</h2>
+<p><strong>Автор:</strong> {{ book.author }}</p>
+<p><strong>Издательство:</strong> {{ book.publisher }}</p>
+<p><strong>Год издания:</strong> {{ book.year }}</p>
+<p><strong>Объём:</strong> {{ book.volume }} страниц</p>
+<p><strong>Жанры:</strong> {% for genre in book.genres %}{{ genre.name }}{% if not loop.last %}, {% endif %}{% endfor %}</p>
+{% if book.cover %}
+    <p><img src="{{ url_for('static', filename='covers/' ~ book.cover.filename) }}" alt="Обложка книги"></p>
+{% endif %}
+<p>{{ book.description }}</p>
+
+<h3>Рецензии</h3>
+{% for review in book.reviews %}
+    <div class="card my-3">
+        <div class="card-body">
+            <h5 class="card-title">Оценка: {{ review.rating }}</h5>
+            <p class="card-text">{{ review.text }}</p>
+            <p class="card-text"><small class="text-muted">Автор: {{ review.user.first_name }} {{ review.user.last_name }} - {{ review.created_at }}</small></p>
+        </div>
+    </div>
+{% endfor %}
+
+{% if current_user.is_authenticated and not user_review %}
+    <a href="{{ url_for('main.add_review', book_id=book.id) }}" class="btn btn-success">Написать рецензию</a>
+{% elif user_review %}
+    <h4>Ваша рецензия</h4>
+    <div class="card my-3">
+        <div class="card-body">
+            <h5 class="card-title">Оценка: {{ user_review.rating }}</h5>
+            <p class="card-text">{{ user_review.text }}</p>
+            <p class="card-text"><small class="text-muted">Дата: {{ user_review.created_at }}</small></p>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}
